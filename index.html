@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hakuloud Home</title>
+    <link rel="stylesheet" href="bulma.min.css">
+  </head>
+  <body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        Hakuloud Home
+      </h1>
+
+      <div class="columns">
+        <div class="column">
+          <h3>Productivity</h3>
+          <div class="content" id="div-prod">
+            <ul type="1" id="ul-prod">
+            </ul>  
+          </div>
+        </div>
+
+        <div class="column">
+          <h3>Self hosting links</h3>
+          <div class="content" id="div-links">
+            <ul type="1" id="ul-links">
+            </ul>  
+          </div>
+        </div>
+
+        <div class="column">
+          <h3>Domains links</h3>
+          <div class="content" id="div-domains">
+            <ul type="1" id="ul-domains">
+            </ul>  
+          </div>
+        </div>
+
+        <div class="column">
+          <h3>Management console links</h3>
+          <div class="content" id="div-management_consoles">
+            <ul type="1" id="ul-management_consoles">
+            </ul>  
+          </div>
+        </div>
+      </div> <!-- /columns -->
+    </div>
+  </section>
+  </body>
+
+  <script src="jquery-3.5.1.min.js"></script>
+  <script src="fa.js"></script>
+  <script src="data.js"></script>
+  <script>
+    String.prototype.format = function (arguments) {
+        var this_string = '';
+        for (var char_pos = 0; char_pos < this.length; char_pos++) {
+            this_string = this_string + this[char_pos];
+        }
+
+        for (var key in arguments) {
+            var string_key = '{' + key + '}'
+            this_string = this_string.replace(new RegExp(string_key, 'g'), arguments[key]);
+        }
+        return this_string;
+    };
+
+    var liTemplate = `
+    <li>
+      <a href="{link}" target="_blank">{link_text}</a>
+    </li>
+    `
+
+
+    $( document ).ready(function() {
+      console.log( "ready!" );
+      console.log(DATA);
+
+      // PRODUCTIVITY TOOLS
+      for (var i = 0; i < DATA.prod.length; i++) {
+        var data_item = DATA.prod[i];
+        $('#ul-prod').append(liTemplate.format({
+           'link': data_item.url, 
+           'link_text': data_item.name,
+        }));
+      }
+
+      // LINKS.
+      for (var i = 0; i < DATA.links.length; i++) {
+        var data_item = DATA.links[i];
+        var link = '';
+        if (data_item.type == 'link') {
+          link = 'http://' + data_item.ip + ':' + data_item.port;
+        }
+
+        $('#ul-links').append(liTemplate.format({
+           'link': link, 
+           'link_text': data_item.name,
+        }));
+      }
+
+      // Second add domains.
+      for (var i = 0; i < DATA.domains.length; i++) {
+        var data_item = DATA.domains[i];
+        var link = '';
+        if (data_item.type == 'link') {
+          link = 'http://' + data_item.ip + ':' + data_item.port;
+        }
+
+        $('#ul-domains').append(liTemplate.format({
+           'link': link, 
+           'link_text': data_item.name,
+        }));
+      }
+
+      // Third add management consoles.
+      for (var i = 0; i < DATA.management_consoles.length; i++) {
+        var data_item = DATA.management_consoles[i];
+        var link = '';
+        if (data_item.type == 'link') {
+          link = 'http://' + data_item.ip + ':' + data_item.port;
+        }
+
+        $('#ul-management_consoles').append(liTemplate.format({
+           'link': link, 
+           'link_text': data_item.name,
+        }));
+      }
+    });
+  </script>
+</html>
